@@ -87,8 +87,8 @@
 
   --sidebar-ring: oklch(57% 0.19 269.3);
 
-  --shell: oklch(34% 0.01 295.11);
-  --shell-foreground: oklch(93% 0 286.38);
+  --shell: oklch(25% 0 0);
+  --shell-foreground: oklch(96% 0 344.05);
 }
 
 .dark {

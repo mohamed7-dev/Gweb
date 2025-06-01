@@ -1,10 +1,10 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { LayoutView } from "@/features/app-shell/components/views/layout-view";
-import "./globals.css";
 import { Providers } from "@/components/providers";
-import { loadAppsConfigFiles, loadDockItems } from "@/features/apps/lib/utils";
 import { GlobalStoreProvider } from "@/components/providers/global-store-provider";
+import { AppShellView } from "@/features/app-shell/components/views/app-shell";
+import { getAppsConfig } from "@/features/apps-manager/lib/utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,8 +26,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const appsConfigs = loadAppsConfigFiles();
-  const dockItems = loadDockItems();
+  const appsConfigs = getAppsConfig();
+  // const dockItems = loadDockItems();
   return (
     <html lang="en">
       <body
@@ -41,8 +41,11 @@ export default function RootLayout({
             disableTransitionOnChange: true,
           }}
         >
-          <GlobalStoreProvider systemApps={appsConfigs} dockItems={dockItems}>
-            <LayoutView>{children}</LayoutView>
+          <GlobalStoreProvider
+            systemApps={appsConfigs}
+            // dockItems={dockItems}
+          >
+            <AppShellView>{children}</AppShellView>
           </GlobalStoreProvider>
         </Providers>
       </body>
