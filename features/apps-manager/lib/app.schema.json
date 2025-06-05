@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Settings App Schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "addToDock": {
+      "type": "boolean"
+    },
+    "bin": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "object",
+      "properties": {
+        "24@2x": { "type": "string" },
+        "48@2x": { "type": "string" },
+        "256@2x": { "type": "string" }
+      },
+      "required": ["24@2x", "48@2x", "256@2x"],
+      "additionalProperties": false
+    },
+    "sidebar-view": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9-_]+$": {
+          "type": "object",
+          "properties": {
+            "sidebarButton": { "type": "string" },
+            "subTitle": { "type": "string" },
+            "icon": { "type": "string" }
+          },
+          "required": ["sidebarButton", "subTitle", "icon"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["id", "title", "slug", "version", "bin", "icon"],
+  "additionalProperties": false
+}

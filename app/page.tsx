@@ -1,5 +1,5 @@
-import { Overview } from "@/features/app-shell/components/overview";
+import { DesktopView } from "@/features/app-shell/components/views/desktop";
 
 export default function HomePage() {
-  return <Overview />;
+  return <DesktopView />;
 }

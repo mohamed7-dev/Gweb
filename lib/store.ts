@@ -1,4 +1,12 @@
 import { AppConfigSchema } from "@/app-config";
+import {
+  SettingsSlice,
+  settingsSlice,
+} from "@/features/settings-app/lib/settings.slice";
+import {
+  appShellSlice,
+  AppShellSlice,
+} from "@/features/app-shell/lib/app-shell.slice";
 // import {
 //   shellSlice,
 //   ShellSlice,
@@ -17,8 +25,21 @@ import { AppConfigSchema } from "@/app-config";
 //   WorkspaceSlice,
 //   workspaceSlice,
 // } from "@/features/workspaces/lib/workspace-slice";
-import { create, createStore } from "zustand";
+import { createStore } from "zustand";
 import { persist } from "zustand/middleware";
+import {
+  workspaceSlice,
+  WorkspaceSlice,
+} from "@/features/app-shell/lib/workspace.slice";
+import { WallpapersMetadata } from "@/features/settings-app/lib/utils";
+import {
+  appsManagerSlice,
+  AppsManagerSlice,
+} from "@/features/apps-manager/lib/apps-manager.slice";
+import {
+  windowManagerSlice,
+  WindowManagerSlice,
+} from "@/features/window-manager/lib/window-manager.slice";
 
 // export const useGlobalStoreContext = create<
 //   ShellSlice &
@@ -56,14 +77,21 @@ import { persist } from "zustand/middleware";
 //   ...dockSlice(...a),
 //   ...workspaceSlice(...a),
 // }));
-export type DockItem = { id: string };
 
+export type DockApp = AppConfigSchema;
 export interface GlobalStoreProps {
   systemApps?: AppConfigSchema[];
-  dockItems?: DockItem[];
+  dockApps?: DockApp[];
+  wallpapers?: WallpapersMetadata;
 }
 
-export interface GlobalStoreState extends GlobalStoreProps {
+export interface GlobalStoreState
+  extends GlobalStoreProps,
+    SettingsSlice,
+    AppShellSlice,
+    WorkspaceSlice,
+    AppsManagerSlice,
+    WindowManagerSlice {
   // ShellSlice,
   // WindowManagerSlice,
   // DockSlice,
@@ -75,6 +103,11 @@ export interface GlobalStoreState extends GlobalStoreProps {
 export const createGlobalStore = (initProps?: Partial<GlobalStoreProps>) => {
   return createStore<GlobalStoreState>()((...a) => ({
     ...initProps,
+    ...settingsSlice(...a),
+    ...appShellSlice(...a),
+    ...workspaceSlice(...a),
+    ...appsManagerSlice(...a),
+    ...windowManagerSlice(...a),
     // ...shellSlice(...a),
     // ...appsGridSlice(...a),
     // ...windowManagerSlice(...a),

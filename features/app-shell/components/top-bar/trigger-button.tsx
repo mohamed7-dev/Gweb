@@ -3,14 +3,22 @@ import { cn } from "@/lib/utils";
 import React from "react";
 
 type TriggerButtonProps = React.ComponentProps<typeof Button> & {
-  //   isActive: boolean;
+  isActive?: boolean;
 };
-export function TriggerButton({ className, ...rest }: TriggerButtonProps) {
+export function TriggerButton({
+  className,
+  isActive = false,
+  ...rest
+}: TriggerButtonProps) {
   return (
     <Button
       variant={"shell"}
       size={"shell"}
-      className={cn("data-[state=open]:bg-muted/80", className)}
+      className={cn(
+        "data-[state=open]:bg-muted/80",
+        isActive && "bg-muted/80",
+        className
+      )}
       {...rest}
     />
   );

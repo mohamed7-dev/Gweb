@@ -1,3 +1,4 @@
+import { AppConfigSchema } from "@/app-config";
 import fs from "fs";
 import path from "path";
 
@@ -14,5 +15,11 @@ export const getAppsConfig = () => {
       return null;
     })
     .filter(Boolean);
-  return config;
+  return config as AppConfigSchema[];
+};
+
+export const getDockItems = () => {
+  const appsConfig = getAppsConfig();
+  const dockItems = appsConfig.filter((app) => app.addToDock);
+  return dockItems;
 };

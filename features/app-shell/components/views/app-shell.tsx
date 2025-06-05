@@ -7,7 +7,7 @@ type AppShellViewProps = {
 };
 export function AppShellView({ children }: AppShellViewProps) {
   return (
-    <div className="w-screen h-screen max-h-screen relative bg-blue-500">
+    <div className="w-screen h-screen max-h-screen relative bg-shell">
       <TopBar />
       <Dock />
       {children}
