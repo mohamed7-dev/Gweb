@@ -7,17 +7,24 @@ export function OverviewButton() {
   const { activateOverview, isOverviewActive } = useGlobalStoreContext(
     (state) => state
   );
-
+  const activeWorkspaces = useGlobalStoreContext(
+    (state) => state.activeWorkspaces
+  );
+  const activeWorkspace = useGlobalStoreContext(
+    (state) => state.activeWorkspace
+  );
   return (
     <TriggerButton
       className="gap-[1px]"
       isActive={isOverviewActive}
       onClick={() => activateOverview("WithoutAppsGrid")}
     >
-      <DotIcon />
-      <DotIcon />
-      <CircleDotIcon />
-      <DotIcon />
+      {activeWorkspaces.map((w) => {
+        if (w.id === activeWorkspace.id) {
+          return <CircleDotIcon key={w.id} />;
+        }
+        return <DotIcon key={w.id} />;
+      })}
     </TriggerButton>
   );
 }

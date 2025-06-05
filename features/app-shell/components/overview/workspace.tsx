@@ -4,6 +4,8 @@ import { useGlobalStoreContext } from "@/components/providers/global-store-provi
 import Image from "next/image";
 import { WorkSpaceInstance } from "../../lib/workspace.slice";
 import { FloatingWindow } from "@/features/window-manager/components/floating-window";
+import { AppContent } from "@/features/apps-manager/components/app-content";
+import { AppHeaderContent } from "@/features/apps-manager/components/app-header-content";
 
 type WorkspaceProps = {
   containerProps?: React.ComponentProps<"div">;
@@ -25,16 +27,21 @@ export function Workspace(props: WorkspaceProps) {
   return (
     <div
       className={cn(
-        "dark bg-secondary w-full h-full relative shadow-lg",
+        "bg-secondary w-full h-full relative shadow-lg",
         isOverviewActive && "rounded-xl",
+        isOverviewActive && "dark",
         containerProps?.className
       )}
       onClick={() => deactivateOverview()}
       {...containerProps}
     >
       {windows.map((w) => (
-        <FloatingWindow key={w.id} windowInfo={w}>
-          <p>app content goes here</p>
+        <FloatingWindow
+          key={w.id}
+          windowInfo={w}
+          HeaderBar={<AppHeaderContent windowInfo={w} />}
+        >
+          <AppContent windowInfo={w} />
         </FloatingWindow>
       ))}
       <Image

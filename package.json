@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "convert:ts": "json2ts --input ./features/apps/lib/app-config-schema.json --output app-config.d.ts"
+    "convert:ts": "json2ts --input ./features/apps-manager/lib/app.schema.json --output app-config.d.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -4,7 +4,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { GlobalStoreProvider } from "@/components/providers/global-store-provider";
 import { AppShellView } from "@/features/app-shell/components/views/app-shell";
-import { getAppsConfig, getDockItems } from "@/features/apps-manager/lib/utils";
 import { getAllWallpapers } from "@/features/settings-app/lib/utils";
 
 const geistSans = Geist({
@@ -27,8 +26,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const appsConfigs = getAppsConfig();
-  const dockItems = getDockItems();
   const wallpapers = getAllWallpapers();
   return (
     <html lang="en">
@@ -43,11 +40,7 @@ export default function RootLayout({
             disableTransitionOnChange: true,
           }}
         >
-          <GlobalStoreProvider
-            systemApps={appsConfigs}
-            dockApps={dockItems}
-            wallpapers={wallpapers}
-          >
+          <GlobalStoreProvider wallpapers={wallpapers}>
             <AppShellView>{children}</AppShellView>
           </GlobalStoreProvider>
         </Providers>

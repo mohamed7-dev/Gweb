@@ -1,6 +1,5 @@
 import React from "react";
 import Draggable from "react-draggable";
-import { WindowDragHandler } from "./window-drag-handler";
 import { FullWindowInfo } from "../lib/window-manager.slice";
 
 type FloatingWindowProps = {
@@ -9,16 +8,25 @@ type FloatingWindowProps = {
 };
 export function FloatingWindow({ children, windowInfo }: FloatingWindowProps) {
   const windowRef = React.useRef<HTMLDivElement>(null);
-  // TODO: fix classname not found bug
   return (
-    <div className="size-full pointer-events-none absolute">
-      <Draggable
-        handle=".window-drag-handler"
-        nodeRef={windowRef as unknown as React.RefObject<HTMLDivElement>}
+    <Draggable
+      defaultPosition={{
+        x: windowInfo.position?.x as number,
+        y: windowInfo.position?.y as number,
+      }}
+      handle=".window-drag-handler"
+      nodeRef={windowRef as unknown as React.RefObject<HTMLDivElement>}
+    >
+      <div
+        ref={windowRef}
+        className="absolute z-50 shadow bg-background text-foreground rounded-lg"
+        style={{
+          width: windowInfo.dimensions?.width,
+          height: windowInfo.dimensions?.height,
+        }}
       >
-        <WindowDragHandler ref={windowRef} title={windowInfo.app.title} />
         {children}
-      </Draggable>
-    </div>
+      </div>
+    </Draggable>
   );
 }

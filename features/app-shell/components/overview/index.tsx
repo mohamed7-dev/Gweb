@@ -15,7 +15,7 @@ export function Overview() {
   return (
     <div
       className={cn(
-        "dark bg-shell text-shell-foreground overflow-hidden",
+        "bg-shell text-shell-foreground overflow-hidden",
         isOverviewActive && "flex flex-col"
       )}
       style={{

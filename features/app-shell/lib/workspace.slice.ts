@@ -21,6 +21,13 @@ export interface WorkspaceSlice {
     windowId: string;
     workspaceId: string;
   }) => void;
+  removeWindowFromWorkspace: ({
+    windowId,
+    workspaceId,
+  }: {
+    windowId: string;
+    workspaceId: string;
+  }) => void;
 }
 
 const DEFAULT_WORKSPACE_ID = uuid();
@@ -64,6 +71,28 @@ export const workspaceSlice: StateCreator<
     const updatedWorkspace = {
       ...workspace,
       windows: [...workspace.windows, { id: info.windowId }],
+    };
+    set((state) => ({
+      ...state,
+      activeWorkspaces: [...filtered, { ...updatedWorkspace }],
+    }));
+  },
+  removeWindowFromWorkspace: (info) => {
+    const filtered = get().activeWorkspaces.filter(
+      (w) => w.id !== info.workspaceId
+    );
+    const workspace = get().activeWorkspaces.find(
+      (w) => w.id === info.workspaceId
+    );
+    if (!workspace) {
+      throw new Error("Workspace not found");
+    }
+    const filteredWindows = workspace.windows.filter(
+      (w) => w.id !== info.windowId
+    );
+    const updatedWorkspace = {
+      ...workspace,
+      windows: filteredWindows,
     };
     set((state) => ({
       ...state,

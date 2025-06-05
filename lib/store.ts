@@ -1,4 +1,3 @@
-import { AppConfigSchema } from "@/app-config";
 import {
   SettingsSlice,
   settingsSlice,
@@ -26,7 +25,6 @@ import {
 //   workspaceSlice,
 // } from "@/features/workspaces/lib/workspace-slice";
 import { createStore } from "zustand";
-import { persist } from "zustand/middleware";
 import {
   workspaceSlice,
   WorkspaceSlice,
@@ -40,6 +38,7 @@ import {
   windowManagerSlice,
   WindowManagerSlice,
 } from "@/features/window-manager/lib/window-manager.slice";
+import { dockSlice, DockSlice } from "@/features/app-shell/lib/dock.slice";
 
 // export const useGlobalStoreContext = create<
 //   ShellSlice &
@@ -78,10 +77,7 @@ import {
 //   ...workspaceSlice(...a),
 // }));
 
-export type DockApp = AppConfigSchema;
 export interface GlobalStoreProps {
-  systemApps?: AppConfigSchema[];
-  dockApps?: DockApp[];
   wallpapers?: WallpapersMetadata;
 }
 
@@ -91,7 +87,8 @@ export interface GlobalStoreState
     AppShellSlice,
     WorkspaceSlice,
     AppsManagerSlice,
-    WindowManagerSlice {
+    WindowManagerSlice,
+    DockSlice {
   // ShellSlice,
   // WindowManagerSlice,
   // DockSlice,
@@ -108,6 +105,7 @@ export const createGlobalStore = (initProps?: Partial<GlobalStoreProps>) => {
     ...workspaceSlice(...a),
     ...appsManagerSlice(...a),
     ...windowManagerSlice(...a),
+    ...dockSlice(...a),
     // ...shellSlice(...a),
     // ...appsGridSlice(...a),
     // ...windowManagerSlice(...a),

@@ -1,8 +1,8 @@
-import { AppConfigSchema } from "@/app-config";
 import { WorkSpaceInstance } from "@/features/app-shell/lib/workspace.slice";
 import { GlobalStoreState } from "@/lib/store";
 import { StateCreator } from "zustand";
 import { v4 as uuid } from "uuid";
+import { SystemApp } from "@/features/apps-manager/lib/system-apps";
 
 type WindowState = "Open" | "Closed" | "Maximized" | "Minimized";
 interface ActiveWindow {
@@ -25,7 +25,7 @@ interface ActiveWindow {
 }
 
 export interface FullWindowInfo extends ActiveWindow {
-  app: AppConfigSchema;
+  app: SystemApp;
   workspace: Pick<WorkSpaceInstance, "id" | "index">;
 }
 
@@ -97,6 +97,10 @@ export const windowManagerSlice: StateCreator<
   },
   closeWindow: (id) => {
     const filtered = get().windows.filter((w) => w.id !== id);
+    get().removeWindowFromWorkspace({
+      windowId: id,
+      workspaceId: get().activeWorkspace.id,
+    });
     set((state) => ({ ...state, windows: filtered, activeWindow: null }));
   },
   minimizeWindow: (id) => {
