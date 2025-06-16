@@ -5,7 +5,6 @@ import Image from "next/image";
 import { WorkSpaceInstance } from "../../lib/workspace.slice";
 import { FloatingWindow } from "@/features/window-manager/components/floating-window";
 import { AppContent } from "@/features/apps-manager/components/app-content";
-import { AppHeaderContent } from "@/features/apps-manager/components/app-header-content";
 
 type WorkspaceProps = {
   containerProps?: React.ComponentProps<"div">;
@@ -36,11 +35,7 @@ export function Workspace(props: WorkspaceProps) {
       {...containerProps}
     >
       {windows.map((w) => (
-        <FloatingWindow
-          key={w.id}
-          windowInfo={w}
-          HeaderBar={<AppHeaderContent windowInfo={w} />}
-        >
+        <FloatingWindow key={w.id} windowInfo={w}>
           <AppContent windowInfo={w} />
         </FloatingWindow>
       ))}

@@ -8,7 +8,6 @@ export type SystemApp = {
   version: string;
   addToDock?: boolean;
   App: React.ComponentType<{ windowInfo: FullWindowInfo }>;
-  HeaderBar: React.ComponentType<{ windowInfo: FullWindowInfo }>;
   icon: {
     "24@2x": string;
     "48@2x": string;
@@ -27,11 +26,6 @@ const SYSTEM_APPS: SystemApp[] = [
     App: dynamic(() =>
       import("@/features/settings-app/components/settings-app").then(
         (mod) => mod.SettingsApp
-      )
-    ),
-    HeaderBar: dynamic(() =>
-      import("@/features/settings-app/components/settings-app-header").then(
-        (mod) => mod.SettingsAppHeader
       )
     ),
     icon: {
