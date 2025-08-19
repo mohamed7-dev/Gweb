@@ -5,6 +5,7 @@ import Image from "next/image";
 import { WorkSpaceInstance } from "../../lib/workspace.slice";
 import { FloatingWindow } from "@/features/window-manager/components/floating-window";
 import { AppContent } from "@/features/apps-manager/components/app-content";
+import { OverviewWindow } from "@/features/window-manager/components/overview-window";
 
 type WorkspaceProps = {
   containerProps?: React.ComponentProps<"div">;
@@ -12,9 +13,8 @@ type WorkspaceProps = {
 };
 export function Workspace(props: WorkspaceProps) {
   const { containerProps, workspaceInfo } = props;
-  const { deactivateOverview, isOverviewActive } = useGlobalStoreContext(
-    (state) => state
-  );
+  const { deactivateOverview, isOverviewActive, activeOverviewVariant } =
+    useGlobalStoreContext((state) => state);
   const getWindowInfo = useGlobalStoreContext((state) => state.getWindowInfo);
   const activeWallpaper = useGlobalStoreContext(
     (state) => state.appearanceSettings.activeWallpaper
@@ -34,11 +34,25 @@ export function Workspace(props: WorkspaceProps) {
       onClick={() => deactivateOverview()}
       {...containerProps}
     >
-      {windows.map((w) => (
-        <FloatingWindow key={w.id} windowInfo={w}>
-          <AppContent windowInfo={w} />
-        </FloatingWindow>
-      ))}
+      {activeOverviewVariant === "WithoutAppsGrid" && (
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(40rem,1fr))] gap-4 size-full absolute z-30">
+          {windows.map((w) => (
+            <OverviewWindow
+              key={w.id}
+              windowInfo={w}
+              workspaceWindowsCount={windows.length}
+            >
+              <AppContent windowInfo={w} />
+            </OverviewWindow>
+          ))}
+        </div>
+      )}
+      {!isOverviewActive &&
+        windows.map((w) => (
+          <FloatingWindow key={w.id} windowInfo={w}>
+            <AppContent windowInfo={w} />
+          </FloatingWindow>
+        ))}
       <Image
         src={activeWallpaper}
         alt="wallpaper"
@@ -46,7 +60,7 @@ export function Workspace(props: WorkspaceProps) {
         fill
         sizes="100vw"
         priority
-        className="object-cover rounded-[inherit]"
+        className="object-cover rounded-[inherit] z-20"
       />
     </div>
   );

@@ -13,7 +13,7 @@ export type WorkSpaceInstance = {
 
 export interface WorkspaceSlice {
   activeWorkspaces: WorkSpaceInstance[];
-  activeWorkspace: WorkSpaceInstance;
+  activeWorkspace: Omit<WorkSpaceInstance, "windows">;
   addWindowToWorkspace: ({
     windowId,
     workspaceId,
@@ -28,9 +28,11 @@ export interface WorkspaceSlice {
     windowId: string;
     workspaceId: string;
   }) => void;
+  setActiveWorkspace: (workspaceId: string) => void;
 }
 
 const DEFAULT_WORKSPACE_ID = uuid();
+console.log({ DEFAULT_WORKSPACE_ID });
 const initState = {
   activeWorkspaces: [
     {
@@ -47,7 +49,6 @@ const initState = {
   activeWorkspace: {
     id: DEFAULT_WORKSPACE_ID,
     index: 0,
-    windows: [],
   },
 };
 
@@ -59,44 +60,47 @@ export const workspaceSlice: StateCreator<
 > = (set, get) => ({
   ...initState,
   addWindowToWorkspace: (info) => {
-    const filtered = get().activeWorkspaces.filter(
-      (w) => w.id !== info.workspaceId
-    );
-    const workspace = get().activeWorkspaces.find(
-      (w) => w.id === info.workspaceId
-    );
-    if (!workspace) {
-      throw new Error("Workspace not found");
-    }
-    const updatedWorkspace = {
-      ...workspace,
-      windows: [...workspace.windows, { id: info.windowId }],
-    };
+    const workspaces = get().activeWorkspaces.map((w) => {
+      if (w.id === info.workspaceId) {
+        return {
+          ...w,
+          windows: [...w.windows, { id: info.windowId }],
+        };
+      }
+      return w;
+    });
     set((state) => ({
       ...state,
-      activeWorkspaces: [...filtered, { ...updatedWorkspace }],
+      activeWorkspaces: [...workspaces],
     }));
   },
   removeWindowFromWorkspace: (info) => {
-    const filtered = get().activeWorkspaces.filter(
-      (w) => w.id !== info.workspaceId
-    );
-    const workspace = get().activeWorkspaces.find(
-      (w) => w.id === info.workspaceId
-    );
+    const workspaces = get().activeWorkspaces.map((w) => {
+      if (w.id === info.workspaceId) {
+        return {
+          ...w,
+          windows: w.windows.filter((window) => window.id !== info.windowId),
+        };
+      }
+      return w;
+    });
+
+    set((state) => ({
+      ...state,
+      activeWorkspaces: [...workspaces],
+    }));
+  },
+  setActiveWorkspace: (workspaceId) => {
+    const workspace = get().activeWorkspaces.find((w) => w.id === workspaceId);
     if (!workspace) {
       throw new Error("Workspace not found");
     }
-    const filteredWindows = workspace.windows.filter(
-      (w) => w.id !== info.windowId
-    );
-    const updatedWorkspace = {
-      ...workspace,
-      windows: filteredWindows,
-    };
     set((state) => ({
       ...state,
-      activeWorkspaces: [...filtered, { ...updatedWorkspace }],
+      activeWorkspace: {
+        id: workspace?.id,
+        index: workspace?.index,
+      },
     }));
   },
 });

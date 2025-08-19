@@ -8,7 +8,10 @@ export function AppMainContent({
   ...rest
 }: AppMainContentProps) {
   return (
-    <div className={cn("space-y-4 rounded-tr-[inherit]", className)} {...rest}>
+    <div
+      className={cn("space-y-4 rounded-tr-[inherit] bg-secondary", className)}
+      {...rest}
+    >
       {children}
     </div>
   );

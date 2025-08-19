@@ -16,9 +16,7 @@ export function Dock() {
   );
   const dockApps = useGlobalStoreContext((state) => state.dockApps);
   const openWindow = useGlobalStoreContext((state) => state.openWindow);
-  const activeWorkspace = useGlobalStoreContext(
-    (state) => state.activeWorkspace
-  );
+  const { activeWorkspace } = useGlobalStoreContext((state) => state);
   return (
     <div
       className={cn(
