@@ -15,7 +15,7 @@ export function AppSidebarHeader({
       className={cn("rounded-tl-[inherit] flex items-center", className)}
       {...rest}
     >
-      <h1 className="flex-1 text-base font-semibold text-center">{appTitle}</h1>
+      <h1 className="flex-1 text-sm font-semibold text-center">{appTitle}</h1>
     </HeaderBar>
   );
 }

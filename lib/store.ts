@@ -39,6 +39,7 @@ import {
   WindowManagerSlice,
 } from "@/features/window-manager/lib/window-manager.slice";
 import { dockSlice, DockSlice } from "@/features/app-shell/lib/dock.slice";
+import { AccentColorMetadata } from "@/features/settings-app/lib/data";
 
 // export const useGlobalStoreContext = create<
 //   ShellSlice &
@@ -78,7 +79,8 @@ import { dockSlice, DockSlice } from "@/features/app-shell/lib/dock.slice";
 // }));
 
 export interface GlobalStoreProps {
-  wallpapers?: WallpapersMetadata;
+  wallpapers: WallpapersMetadata[];
+  accentColors: AccentColorMetadata[];
 }
 
 export interface GlobalStoreState
@@ -97,7 +99,7 @@ export interface GlobalStoreState
   // WorkspaceSlice
 }
 
-export const createGlobalStore = (initProps?: Partial<GlobalStoreProps>) => {
+export const createGlobalStore = (initProps: GlobalStoreProps) => {
   return createStore<GlobalStoreState>()((...a) => ({
     ...initProps,
     ...settingsSlice(...a),

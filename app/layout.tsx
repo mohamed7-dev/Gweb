@@ -5,6 +5,7 @@ import { Providers } from "@/components/providers";
 import { GlobalStoreProvider } from "@/components/providers/global-store-provider";
 import { AppShellView } from "@/features/app-shell/components/views/app-shell";
 import { getAllWallpapers } from "@/features/settings-app/lib/utils";
+import { ACCENT_COLORS } from "@/features/settings-app/lib/data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +41,10 @@ export default function RootLayout({
             disableTransitionOnChange: true,
           }}
         >
-          <GlobalStoreProvider wallpapers={wallpapers}>
+          <GlobalStoreProvider
+            wallpapers={wallpapers}
+            accentColors={ACCENT_COLORS}
+          >
             <AppShellView>{children}</AppShellView>
           </GlobalStoreProvider>
         </Providers>

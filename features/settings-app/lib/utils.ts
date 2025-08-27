@@ -9,7 +9,8 @@ export const getAllWallpapers = () => {
     .map((file) => ({
       name: file,
       path: `/wallpapers/${file}`,
+      id: `gnome.wallpaper.${file}`,
     }));
 };
 
-export type WallpapersMetadata = ReturnType<typeof getAllWallpapers>;
+export type WallpapersMetadata = ReturnType<typeof getAllWallpapers>[number];

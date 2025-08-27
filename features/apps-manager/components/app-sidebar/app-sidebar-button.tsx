@@ -23,12 +23,12 @@ export function AppSidebarButton({
       )}
       {...props}
     >
-      <div className="size-6 relative">
+      <div className="size-4 relative">
         <Image
           src={iconPath}
           alt={buttonTitle}
           fill
-          sizes="40px"
+          sizes="1rem"
           className="size-full object-contain"
         />
       </div>

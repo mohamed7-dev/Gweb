@@ -12,7 +12,7 @@ export function BasicWindowControls({
 }: BasicWindowControlsProps) {
   const closeWindow = useGlobalStoreContext((state) => state.closeWindow);
   return (
-    <div className="absolute right-2 top-2">
+    <div className="absolute right-3 top-3">
       <Button
         variant={"muted"}
         size={"icon"}

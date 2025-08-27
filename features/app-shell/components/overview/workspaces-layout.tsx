@@ -11,18 +11,25 @@ export function WorkspacesLayout({
   containerProps: { className, ...rest },
 }: WorkspacesLayoutProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const { activeOverviewVariant } = useGlobalStoreContext((state) => state);
+  const { activeOverviewVariant, isOverviewActive } = useGlobalStoreContext(
+    (state) => state
+  );
   const activeWorkspaces = useGlobalStoreContext(
     (state) => state.activeWorkspaces
   );
   const width =
-    (activeOverviewVariant === "WithoutAppsGrid" ? 90 : 100) *
-    activeWorkspaces.length;
+    activeOverviewVariant === "WithAppsGrid"
+      ? 100
+      : (isOverviewActive ? 90 : 100) * activeWorkspaces.length;
+
   useObserveWorkspace({ containerRef });
   return (
     <div
       className={cn(
-        "w-full h-full overflow-x-auto no-scrollbar snap-x snap-mandatory",
+        "size-full",
+        activeOverviewVariant === "WithAppsGrid" && "max-h-[15rem] bg-red-500",
+        activeOverviewVariant !== "WithAppsGrid" &&
+          "overflow-x-auto no-scrollbar snap-x snap-mandatory",
         className
       )}
       ref={containerRef}
@@ -32,10 +39,8 @@ export function WorkspacesLayout({
         className={cn("h-full flex items-center")}
         style={{
           width: `${width}%`,
-          marginInlineStart:
-            activeOverviewVariant === "WithoutAppsGrid" ? "5%" : undefined,
-          marginInlineEnd:
-            activeOverviewVariant === "WithoutAppsGrid" ? "5%" : undefined,
+          marginInlineStart: isOverviewActive ? "5%" : undefined,
+          marginInlineEnd: isOverviewActive ? "5%" : undefined,
           gap:
             activeOverviewVariant === "WithoutAppsGrid" ? "2.5rem" : undefined,
         }}
@@ -43,15 +48,23 @@ export function WorkspacesLayout({
         {activeWorkspaces.map((w) => (
           <li
             key={w.id}
-            className="flex-1 snap-center snap-normal"
+            className={cn(
+              "flex-1 snap-center snap-normal",
+              activeOverviewVariant === "WithAppsGrid" &&
+                "flex items-center gap-10 max-w-[20rem]"
+            )}
             data-workspace-id={w.id}
             style={{
               height:
-                activeOverviewVariant === "WithoutAppsGrid" ? "90%" : "100%",
-              width:
                 activeOverviewVariant === "WithoutAppsGrid"
+                  ? "90%"
+                  : activeOverviewVariant === "WithAppsGrid"
+                    ? "10rem"
+                    : "100%",
+              width:
+                activeOverviewVariant === "WithoutAppsGrid" || !isOverviewActive
                   ? `${width / activeWorkspaces.length}%`
-                  : "100%",
+                  : `${width}%`,
             }}
           >
             <Workspace workspaceInfo={w} />

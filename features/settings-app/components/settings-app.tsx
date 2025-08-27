@@ -1,24 +1,27 @@
 import React from "react";
-import { SettingsAppHeader } from "./settings-app-header";
 import { FullWindowInfo } from "@/features/window-manager/lib/window-manager.slice";
 import { AppSidebar } from "@/features/apps-manager/components/app-sidebar";
 import { AppSidebarHeader } from "@/features/apps-manager/components/app-sidebar/app-sidebar-header";
-import { AppMainContent } from "@/features/apps-manager/components/app-main-content";
-import { AppMainContentHeader } from "@/features/apps-manager/components/app-main-content/app-main-content-header";
-import { SIDEBAR_ITEMS } from "../lib/data";
+import { SETTINGS_APP_SCREENS_IDS, SIDEBAR_ITEMS } from "../lib/data";
 import { AppSidebarButton } from "@/features/apps-manager/components/app-sidebar/app-sidebar-button";
 import { AppSidebarContent } from "@/features/apps-manager/components/app-sidebar/app-sidebar-content";
 import { cn } from "@/lib/utils";
+import { AppearanceScreen } from "./appearance";
+import { AppWrapper } from "@/features/apps-manager/components/app-wrapper";
+import { useGlobalStoreContext } from "@/components/providers/global-store-provider";
+import { KeyboardScreen } from "./keyboard";
+import { ModifierKeyScreen } from "./keyboard/modifier-key-screen";
 
 type SettingsAppProps = {
   windowInfo: FullWindowInfo;
 };
 export function SettingsApp({ windowInfo }: SettingsAppProps) {
-  const [activePage, setActivePage] = React.useState(SIDEBAR_ITEMS.appearance);
-  // TODO: get active sidebar item and render the main content title accordingly
-
+  const { getActiveScreen, changeScreen } = useGlobalStoreContext(
+    (state) => state
+  );
+  const activeScreen = getActiveScreen();
   return (
-    <div className="rounded-[inherit] flex h-full">
+    <AppWrapper>
       <AppSidebar>
         <AppSidebarHeader appTitle={windowInfo.app.title} />
         <AppSidebarContent className="space-y-1">
@@ -27,17 +30,21 @@ export function SettingsApp({ windowInfo }: SettingsAppProps) {
               key={item.id}
               buttonTitle={item.sidebarTitle}
               iconPath={item.icon}
-              className={cn(activePage.id === item.id && "bg-accent")}
-              onClick={() => setActivePage(item)}
+              className={cn(getActiveScreen().id === item.id && "bg-accent")}
+              onClick={() => changeScreen(item.id)}
             />
           ))}
         </AppSidebarContent>
       </AppSidebar>
-      <AppMainContent className="flex-1">
-        <AppMainContentHeader windowInfo={windowInfo}>
-          <SettingsAppHeader title={activePage.pageTitle} />
-        </AppMainContentHeader>
-      </AppMainContent>
-    </div>
+      {activeScreen.id === SETTINGS_APP_SCREENS_IDS.appearance && (
+        <AppearanceScreen window={windowInfo} />
+      )}
+      {activeScreen.id === SETTINGS_APP_SCREENS_IDS.keyboard && (
+        <KeyboardScreen window={windowInfo} />
+      )}
+      {activeScreen.id === SETTINGS_APP_SCREENS_IDS.keyModifier && (
+        <ModifierKeyScreen window={windowInfo} />
+      )}
+    </AppWrapper>
   );
 }

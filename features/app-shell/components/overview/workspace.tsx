@@ -13,11 +13,16 @@ type WorkspaceProps = {
 };
 export function Workspace(props: WorkspaceProps) {
   const { containerProps, workspaceInfo } = props;
-  const { deactivateOverview, isOverviewActive, activeOverviewVariant } =
-    useGlobalStoreContext((state) => state);
+  const {
+    deactivateOverview,
+    isOverviewActive,
+    activeOverviewVariant,
+    activeWorkspace,
+  } = useGlobalStoreContext((state) => state);
+  const isActiveWorkspace = activeWorkspace.id === workspaceInfo.id;
   const getWindowInfo = useGlobalStoreContext((state) => state.getWindowInfo);
-  const activeWallpaper = useGlobalStoreContext(
-    (state) => state.appearanceSettings.activeWallpaper
+  const { getActiveWallpaper } = useGlobalStoreContext(
+    (state) => state.appearanceSettings
   );
   const windows = workspaceInfo.windows.map((w) => getWindowInfo(w.id));
   // TODO: get workspace windows and render them based on the active overview variant
@@ -26,9 +31,11 @@ export function Workspace(props: WorkspaceProps) {
   return (
     <div
       className={cn(
-        "bg-secondary w-full h-full relative shadow-lg",
+        "bg-secondary w-full h-full relative shadow-lg transition-transform duration-500",
         isOverviewActive && "rounded-xl",
         isOverviewActive && "dark",
+        isActiveWorkspace && isOverviewActive && "scale-105",
+        !isActiveWorkspace && isOverviewActive && "scale-95",
         containerProps?.className
       )}
       onClick={() => deactivateOverview()}
@@ -47,21 +54,24 @@ export function Workspace(props: WorkspaceProps) {
           ))}
         </div>
       )}
+      {activeOverviewVariant === "WithAppsGrid" && <p>Apps Grid</p>}
+
       {!isOverviewActive &&
         windows.map((w) => (
           <FloatingWindow key={w.id} windowInfo={w}>
             <AppContent windowInfo={w} />
           </FloatingWindow>
         ))}
-      <Image
-        src={activeWallpaper}
+
+      {/* <Image
+        src={getActiveWallpaper().path}
         alt="wallpaper"
         quality={100}
         fill
         sizes="100vw"
         priority
         className="object-cover rounded-[inherit] z-20"
-      />
+      /> */}
     </div>
   );
 }

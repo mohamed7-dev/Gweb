@@ -130,6 +130,56 @@
   --sidebar-ring: oklch(57% 0.19 269.3);
 }
 
+.teal {
+  --primary: oklch(54% 0.09 194.77);
+  --primary-foreground: oklch(93% 0 0);
+}
+
+.blue {
+  --primary: oklch(57% 0.19 255.91);
+  --primary-foreground: oklch(93% 0 0);
+}
+
+.green {
+  --primary: oklch(55% 0.16 133.24);
+  --primary-foreground: oklch(93% 0 0);
+}
+
+.yellow {
+  --primary: oklch(67% 0.14 75.64);
+  --primary-foreground: oklch(93% 0 0);
+}
+
+.orange {
+  --primary: oklch(64% 0.19 37.76);
+  --primary-foreground: oklch(93% 0 0);
+}
+
+.red {
+  --primary: oklch(59% 0.2 17.04);
+  --primary-foreground: oklch(93% 0 0);
+}
+
+.pink {
+  --primary: oklch(59% 0.18 327.59);
+  --primary-foreground: oklch(93% 0 0);
+}
+
+.purple {
+  --primary: oklch(58% 0.17 287.34);
+  --primary-foreground: oklch(93% 0 0);
+}
+
+.slate {
+  --primary: oklch(56% 0.04 150.35);
+  --primary-foreground: oklch(93% 0 0);
+}
+
+.warty-brown {
+  --primary: oklch(68% 0.07 70.81);
+  --primary-foreground: oklch(93% 0 0);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

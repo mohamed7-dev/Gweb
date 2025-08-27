@@ -15,7 +15,7 @@ export function AppMainContentHeader({
   ...rest
 }: AppMainContentHeaderProps) {
   return (
-    <HeaderBar className={cn("rounded-tr-[inherit]", className)} {...rest}>
+    <HeaderBar className={cn("rounded-tr-[inherit] my-2", className)} {...rest}>
       <BasicWindowControls windowInfo={windowInfo} />
       {children}
     </HeaderBar>

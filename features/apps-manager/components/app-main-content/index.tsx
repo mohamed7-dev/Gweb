@@ -9,7 +9,10 @@ export function AppMainContent({
 }: AppMainContentProps) {
   return (
     <div
-      className={cn("space-y-4 rounded-tr-[inherit] bg-secondary", className)}
+      className={cn(
+        "space-y-4 rounded-tr-[inherit] rounded-br-[inherit] bg-secondary overflow-y-auto",
+        className
+      )}
       {...rest}
     >
       {children}

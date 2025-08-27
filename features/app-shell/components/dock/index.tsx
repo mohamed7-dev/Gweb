@@ -3,7 +3,6 @@ import React from "react";
 import { DockButton } from "./dock-button";
 import { useGlobalStoreContext } from "@/components/providers/global-store-provider";
 import { cn } from "@/lib/utils";
-import { AppWindowMacIcon } from "lucide-react";
 import Image from "next/image";
 import { TooltipWrapper } from "@/components/overlays/tooltip-wrapper";
 
@@ -11,11 +10,14 @@ export function Dock() {
   const { dockWidth, topBarHeight } = useGlobalStoreContext(
     (state) => state.appShellSettings
   );
-  const isOverviewActive = useGlobalStoreContext(
-    (state) => state.isOverviewActive
+  const { isOverviewActive, activateOverview } = useGlobalStoreContext(
+    (state) => state
   );
   const dockApps = useGlobalStoreContext((state) => state.dockApps);
   const openWindow = useGlobalStoreContext((state) => state.openWindow);
+  const startHereIconPath = useGlobalStoreContext(
+    (state) => state.startHereIconPath
+  );
   const { activeWorkspace } = useGlobalStoreContext((state) => state);
   return (
     <div
@@ -42,6 +44,7 @@ export function Dock() {
             sideOffset={10}
           >
             <DockButton
+              appId={app.id}
               className="relative"
               onClick={() =>
                 openWindow({ appId: app.id, workspaceId: activeWorkspace.id })
@@ -62,8 +65,17 @@ export function Dock() {
       {/* Open Windows Goes Here */}
 
       {/* Dock Launcher goes Here  */}
-      <DockButton>
-        <AppWindowMacIcon />
+      <DockButton
+        className="relative"
+        onClick={() => activateOverview("WithAppsGrid")}
+      >
+        <Image
+          src={startHereIconPath}
+          alt={"start here"}
+          fill
+          sizes="96px"
+          className="object-contain p-1"
+        />
       </DockButton>
     </div>
   );
