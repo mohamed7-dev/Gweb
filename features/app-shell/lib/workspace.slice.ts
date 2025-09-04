@@ -12,6 +12,7 @@ export type WorkSpaceInstance = {
 };
 
 export interface WorkspaceSlice {
+  isManualActivation: boolean;
   activeWorkspaces: WorkSpaceInstance[];
   activeWorkspace: Omit<WorkSpaceInstance, "windows">;
   addWindowToWorkspace: ({
@@ -29,11 +30,14 @@ export interface WorkspaceSlice {
     workspaceId: string;
   }) => void;
   setActiveWorkspace: (workspaceId: string) => void;
+  toggleManualActivation: (open: boolean) => void;
 }
 
 const DEFAULT_WORKSPACE_ID = uuid();
 console.log({ DEFAULT_WORKSPACE_ID });
+
 const initState = {
+  isManualActivation: false,
   activeWorkspaces: [
     {
       id: DEFAULT_WORKSPACE_ID,
@@ -103,4 +107,9 @@ export const workspaceSlice: StateCreator<
       },
     }));
   },
+  toggleManualActivation: (open) =>
+    set((state) => ({
+      ...state,
+      isManualActivation: open,
+    })),
 });

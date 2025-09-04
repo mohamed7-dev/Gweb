@@ -8,7 +8,6 @@ import { OverviewSearchBox } from "@/features/search/components/overview-search-
 export function Overview() {
   const {
     appShellSettings: { topBarHeight, dockWidth },
-    activeOverviewVariant,
     isOverviewActive,
   } = useGlobalStoreContext((state) => state);
 
@@ -20,8 +19,7 @@ export function Overview() {
       )}
       style={{
         height: `calc(100vh - ${topBarHeight}px)`,
-        marginInlineStart:
-          activeOverviewVariant === "WithoutAppsGrid" ? dockWidth : undefined,
+        marginInlineStart: isOverviewActive ? dockWidth : undefined,
         gap: "1%",
       }}
     >

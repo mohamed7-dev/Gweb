@@ -4,9 +4,8 @@ import { TriggerButton } from "./trigger-button";
 import { useGlobalStoreContext } from "@/components/providers/global-store-provider";
 
 export function OverviewButton() {
-  const { activateOverview, isOverviewActive } = useGlobalStoreContext(
-    (state) => state
-  );
+  const { activateOverview, isOverviewActive, deactivateOverview } =
+    useGlobalStoreContext((state) => state);
   const activeWorkspaces = useGlobalStoreContext(
     (state) => state.activeWorkspaces
   );
@@ -17,7 +16,11 @@ export function OverviewButton() {
     <TriggerButton
       className="gap-[1px]"
       isActive={isOverviewActive}
-      onClick={() => activateOverview("WithoutAppsGrid")}
+      onClick={() =>
+        isOverviewActive
+          ? deactivateOverview()
+          : activateOverview("WithoutAppsGrid")
+      }
     >
       {activeWorkspaces.map((w) => {
         if (w.id === activeWorkspace.id) {
